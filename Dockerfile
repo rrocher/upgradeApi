@@ -1,0 +1,17 @@
+FROM openjdk:8-jdk-alpine3.9
+
+RUN apk add bash
+
+EXPOSE 8080/tcp
+
+ARG PROJECT_BUILD_FINAL_NAME
+ARG PROJECT_DIR
+
+ADD ./maven/${PROJECT_DIR} /opt/app/${PROJECT_DIR}
+
+WORKDIR /opt/app/${PROJECT_DIR}
+
+ENV JAVA_OPTS ""
+ENV JAR_FILE ${PROJECT_BUILD_FINAL_NAME}.jar
+
+ENTRYPOINT exec java $JAVA_OPTS -jar $JAR_FILE

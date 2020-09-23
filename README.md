@@ -1,7 +1,7 @@
 # upgradeApi
 This api provides
-- A Reservation feature for a campsite for a given date range with the default being 1 month for a maximum of 3 days
-- A feture to get information of the availability of the campsite
+- A Reservation feature for a campsite for a given date range with the default being 1 month for a maximum of 3 days with validation checks
+- A feature to get information of the availability of the campsite
 - Ability to modify an existing reservation on the campsite
 
 To run it, clone the repository and in the folder execute the following steps:

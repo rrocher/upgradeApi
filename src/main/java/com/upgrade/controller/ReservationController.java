@@ -78,9 +78,9 @@ public class ReservationController {
 	public ResponseEntity<List<ReservationDto>> getReservationByCustomer(ReservationDto res, UriComponentsBuilder ucb)
 			throws ParseException {
 
-		log.info("getReservationByCustomer called for customer [{}}", res.getEmail());
-
 		Validate.notNull(res, "reservation object must not be null");
+		
+		log.info("getReservationByCustomer called for customer [{}}", res.getEmail());
 
 		List<Reservation> reservations = null;
 
@@ -142,6 +142,9 @@ public class ReservationController {
 			throws ParseException, ValidationException {
 		Reservation reserv = null;
 
+
+		Validate.notNull(res, "reservation object must not be null");
+		
 		log.info("AddBooking called for customer [{}}", res.getEmail());
 
 		try {
@@ -165,6 +168,9 @@ public class ReservationController {
 			UriComponentsBuilder ucb) throws ParseException, ValidationException {
 
 		Reservation reserv = null;
+
+		Validate.notNull(res, "reservation object must not be null");
+		Validate.notNull(identifier, "identifier object must not be null");
 
 		log.info("ModifyBooking called for identifier [{}}", identifier);
 		
@@ -191,6 +197,8 @@ public class ReservationController {
 	public ResponseEntity<ReservationDto> deleteBooking(@PathVariable("identifier") String identifier,
 			@RequestBody ReservationDto res, UriComponentsBuilder ucb) throws ParseException, ValidationException {
 
+		Validate.notNull(res, "reservation object must not be null");
+		Validate.notNull(identifier, "identifier object must not be null");
 		log.info("DeleteBooking called for identifier [{}}", identifier);
 
 		try {

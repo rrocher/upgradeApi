@@ -151,7 +151,7 @@ public class ReservationServiceImpl implements ReservationService {
 		Customer cust = customerDao.findByEmail(res.getEmail());
 
 		if (cust == null) {
-			cust = customerDao.save(new Customer(res.getEmail(), res.getFirstName(), res.getLastName()));
+			throw new NotFoundException();
 		}
 
 		long startDate = Long.parseLong(res.getStartDate());
@@ -192,7 +192,7 @@ public class ReservationServiceImpl implements ReservationService {
 		Customer cust = customerDao.findByEmail(res.getEmail());
 
 		if (cust == null) {
-			cust = customerDao.save(new Customer(res.getEmail(), res.getFirstName(), res.getLastName()));
+			throw new NotFoundException();
 		}
 		return this.reservationDao.findByCustomer(cust);
 	}

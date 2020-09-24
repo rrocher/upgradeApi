@@ -11,7 +11,7 @@ To run it, clone the repository and in the folder execute the following steps:
 
 Then you can access documentation on the API through the swagger UI at http://localhost:8080/swagger-ui.html#/reservation-controller
 reservation-controller
-API pour es opérations CRUD sur les produits.
+API 
 
 
 POST

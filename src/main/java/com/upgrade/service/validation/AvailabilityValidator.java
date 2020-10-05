@@ -17,34 +17,36 @@ public class AvailabilityValidator implements Validator {
 
 	@Autowired
 	ConfigurationProperties config;
-	
+
 	@Autowired
 	public AvailabilityValidator(ReservationDao reservationDao) {
 		super();
 		this.reservationDao = reservationDao;
 	}
 
-
 	@Override
 	public void execute(ReservationDto res) throws ValidationException {
 		long startDate = Long.parseLong(res.getStartDate());
-		long endDate = Long.parseLong(res.getEndDate());      
+		long endDate = Long.parseLong(res.getEndDate());
 		List<Reservation> currentReservations = reservationDao
 				.findByStartDateGreaterThanEqualOrderByStartDateAsc(startDate);
-		
+
 		currentReservations.addAll(reservationDao.findByEndDateGreaterThanEqualOrderByEndDateAsc(startDate));
-		
+
 		if (currentReservations.isEmpty())
 			return;
 		for (Reservation reservation : currentReservations) {
+			if (reservation.getIdentifier().equals(res.getIdentifier())) {
+				continue;
+			}
 			if (reservation.getStartDate() == startDate) {
 				throw new ValidationException(config.getMsgUnavailableDates());
 			}
 
-			if ((reservation.getStartDate() > startDate) && (reservation.getStartDate()  < endDate)) {
+			if ((reservation.getStartDate() > startDate) && (reservation.getStartDate() < endDate)) {
 				throw new ValidationException(config.getMsgOverlappingDates());
 			}
-			if ((reservation.getEndDate() > startDate) &&  reservation.getEndDate() <= endDate) {
+			if ((reservation.getEndDate() > startDate) && reservation.getEndDate() <= endDate) {
 				throw new ValidationException(config.getMsgOverlappingDates());
 			}
 

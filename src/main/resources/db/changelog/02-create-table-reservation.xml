@@ -8,6 +8,9 @@
 		<createTable tableName="reservation"
 			remarks="A table to store the reservations">
 
+			<column name="version" type="long">
+				<constraints nullable="false" />
+			</column>
 			<column name="start_date" type="long">
 				<constraints nullable="false" />
 			</column>

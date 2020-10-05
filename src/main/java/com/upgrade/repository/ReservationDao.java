@@ -3,11 +3,12 @@ package com.upgrade.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.upgrade.domain.Customer;
 import com.upgrade.domain.Reservation;
 
-public interface ReservationDao extends JpaRepository<Reservation, String>{
+public interface ReservationDao extends CrudRepository<Reservation, String>{
 	
 	List<Reservation> findByStartDateGreaterThanEqualOrderByStartDateAsc(long startDate);
 	

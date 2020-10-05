@@ -33,7 +33,7 @@ class UpgradeApiApplicationTests {
 
 	}
 
-	private ReservationDto createReservation(int start, int duration) {
+	public static ReservationDto createReservation(int start, int duration) {
 		Calendar cal = new GregorianCalendar();
 		Calendar cal1 = new GregorianCalendar();
 		cal.add(Calendar.DAY_OF_WEEK, start);
@@ -46,7 +46,6 @@ class UpgradeApiApplicationTests {
 		String email = "rocher.rimte@gmail.com";
 		ReservationDto resDto = new ReservationDto(startDate, endDate, email, firstName, lastName);
 		return resDto;
-
 	}
 
 	@Test

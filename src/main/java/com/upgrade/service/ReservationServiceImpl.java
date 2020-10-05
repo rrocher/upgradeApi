@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,20 +134,17 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	@Transactional
 	public Reservation modifyReservation(ReservationDto res, String identifier) throws ValidationException {
+		Validate.notNull(res, "reservation object must not be null");
+		Validate.notNull(identifier, "identifier object must not be null");
 		Reservation reservation = this.reservationDao.findByIdentifier(identifier);
+	
 		if (reservation == null) {
 			throw new NotFoundException();
 		}
-		Reservation copy = new Reservation(reservation);
-
-		int rc = this.deleteReservation(res, identifier);
-
-		try {
-			this.validatorBroker.validate(res);
-		} catch (ValidationException e) {
-			reservationDao.save(copy);
-			throw e;
-		}
+		
+		res.setIdentifier(identifier);
+		
+		this.validatorBroker.validate(res);
 
 		Customer cust = customerDao.findByEmail(res.getEmail());
 
@@ -156,8 +154,10 @@ public class ReservationServiceImpl implements ReservationService {
 
 		long startDate = Long.parseLong(res.getStartDate());
 		long endDate = Long.parseLong(res.getEndDate());
-		Reservation reserv = new Reservation(copy.getIdentifier(), startDate, endDate, cust);
-		return reservationDao.save(reserv);
+		reservation.setEndDate(endDate);
+		reservation.setStartDate(startDate);
+		reservation.setCustomer(cust);
+		return reservationDao.save(reservation);
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class ReservationServiceImpl implements ReservationService {
 		if (cust == null) {
 			throw new NotFoundException();
 		}
-		
+
 		if (!reservation.getCustomer().equals(cust)) {
 
 			throw new NotFoundException();

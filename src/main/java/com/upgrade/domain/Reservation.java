@@ -6,10 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
-import lombok.AllArgsConstructor;
+import com.sun.istack.NotNull;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor 
-@AllArgsConstructor
 @Table(name = "reservation")
 @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r")
 public class Reservation {
@@ -40,6 +40,10 @@ public class Reservation {
 	@Id
     @Column(name="identifier",nullable = false)
 	private String identifier;
+	
+	@Version
+	@NotNull
+	private long version;
 
     @Column(name="startDate",nullable = false)
 	private long startDate;
@@ -50,6 +54,15 @@ public class Reservation {
 	@ManyToOne
 	@JoinColumn(name = "customer")
 	private Customer customer;
+
+	public Reservation(String identifier, long startDate, long endDate, Customer customer) {
+		super();
+		this.identifier = identifier;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.customer = customer;
+	}
+	
 
 
 }

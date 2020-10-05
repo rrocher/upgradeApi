@@ -4,7 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.Validate;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.upgrade.domain.Reservation;
@@ -21,23 +24,25 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservationDto {
 
-//	@JsonProperty("identifier")
+	@JsonProperty("identifier")
 	private String identifier;
-
-//	@JsonProperty("start_date")
+	
+	@JsonProperty("start_date")
 	private String startDate;
-
-//	@JsonProperty("end_date")
+	
+	@JsonProperty("end_date")
 	private String endDate;
 
-//	@JsonProperty("email")
+	@JsonProperty("email")
 	private String email;
 
-//	@JsonProperty("first_name")
+	@JsonProperty("first_name")
 	private String firstName;
 
-//	@JsonProperty("last_name")
+	@JsonProperty("last_name")
 	private String lastName;
+
+	private Long version;
 
 	public String getStartDate() {
 		return startDate;
@@ -79,7 +84,28 @@ public class ReservationDto {
 		this.lastName = lastName;
 	}
 
+	public Date getParsedStartDate() {
+		return parseDate(this.startDate);
+	}
+
+	public Date getParsedEndDate() {
+		return parseDate(this.endDate);
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+	
 	private Date parseDate(String dateToParse) {
+		Validate.notBlank(dateToParse);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date;
 		try {
@@ -88,14 +114,6 @@ public class ReservationDto {
 			throw new IllegalArgumentException("Can not parse the start date of your booking");
 		}
 		return date;
-	}
-
-	public Date getParsedStartDate() {
-		return parseDate(this.startDate);
-	}
-
-	public Date getParsedEndDate() {
-		return parseDate(this.endDate);
 	}
 
 	@JsonCreator
@@ -116,19 +134,11 @@ public class ReservationDto {
 		this.lastName = reservation.getCustomer().getLastName();
 		this.firstName = reservation.getCustomer().getFirstName();
 		this.identifier = reservation.getIdentifier();
+		this.version = reservation.getVersion();
 	}
-
-	public String getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
-
+	
 	public ReservationDto() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 }
